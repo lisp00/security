@@ -8,6 +8,8 @@
 <!-- 커스텀 접근거부 페이지 1/2 -->
 <bean id="customAccessDenied" class="org.zerock.security.CustomAccessDeniedHandler"></bean>
 <bean id="customLoginSuccess" class="org.zerock.security.CustomLoginSuccessHandler"></bean>
+<bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"></bean>
+<!-- <bean id="customPasswordEncoder" class="org.zerock.security.CustomNoOpPasswordEncoder"></bean> -->
 
 <security:http>
 	<!-- url페이지별 접근권한 제어 -->
@@ -33,11 +35,23 @@
 <security:authentication-manager>
 	<security:authentication-provider>
 	
-		<security:user-service>
-			<!-- user의 아이디에 따른 권한명 부여 -->
+		<!-- jdbc 연결을 통해 인증을 구현할 경우  -->
+		<security:jdbc-user-service data-source-ref="dataSource"
+		users-by-username-query="select userid, userpw, enabled from tbl_member where userid = ?"
+		authorities-by-username-query="select userid, auth from tbl_member_auth where userid = ? "/>
+
+		<!-- 패스워드 인코딩 커스텀 -->
+		<!-- <security:password-encoder ref="customPasswordEncoder"/> -->
+
+		<security:password-encoder ref="bcryptPasswordEncoder"/>
+		
+		<!-- 
+		<security:user-service>-->
+			<!-- user의 아이디에 따른 권한명 부여 --><!-- 
 			<security:user name="member" password="{noop}member" authorities="ROLE_MEMBER"/>
 			<security:user name="admin" password="{noop}admin" authorities="ROLE_MEMBER, ROLE_ADMIN"/>
 		</security:user-service>
+		  -->
 		
 	</security:authentication-provider>
 </security:authentication-manager>
