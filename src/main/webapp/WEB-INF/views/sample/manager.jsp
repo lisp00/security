@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>/sample member page</h1>
+	<h1>/sample manager page</h1>
 </body>
 </html>

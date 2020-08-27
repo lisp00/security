@@ -16,7 +16,7 @@ public class SampleController {
 		log.info("do allcan access everybody");
 	}
 	
-	@GetMapping("/member")
+	@GetMapping("/manager")
 	public void doMember() {
 		log.info("logined member");
 	}
